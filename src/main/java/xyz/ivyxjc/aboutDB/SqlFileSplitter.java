@@ -1,4 +1,4 @@
-package xyz.ivyxjc;
+package xyz.ivyxjc.aboutDB;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.ivyxjc.utils.ApacheLineIterator;
 
 /**
  * All methods use Apache FileUtils to read data incrementally. Don't worry about memory.
@@ -25,7 +26,7 @@ public class SqlFileSplitter {
      */
     public static void split(String sourcePath, String targetPath) throws IOException {
         int count = 0;
-        LineIterator it = getLineIterator(sourcePath);
+        LineIterator it = ApacheLineIterator.getLineIterator(sourcePath);
         File targetFile = new File(targetPath);
         try {
             while (it.hasNext()) {
@@ -83,15 +84,5 @@ public class SqlFileSplitter {
             LineIterator.closeQuietly(it);
         }
         return count;
-    }
-
-    private static LineIterator getLineIterator(String path) throws IOException {
-        File source = new File(path);
-        return FileUtils.lineIterator(source, DEFAULT_CHARSET);
-    }
-
-    private static LineIterator getLineIterator(String path, String charset) throws IOException {
-        File source = new File(path);
-        return FileUtils.lineIterator(source, charset);
     }
 }

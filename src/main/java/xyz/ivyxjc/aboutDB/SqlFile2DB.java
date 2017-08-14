@@ -1,24 +1,24 @@
-package xyz.ivyxjc;
+package xyz.ivyxjc.aboutDB;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.sql.DataSource;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import xyz.ivyxjc.utils.ApacheLineIterator;
 
 public class SqlFile2DB {
     private static Logger log = LogManager.getLogger(SqlFile2DB.class);
-    private static String DEFAULT_CHARSET = "UTF-8";
 
     private static String DRIVER_NAME;
     private static String DB_URL;
+    private static String USERNAME;
+    private static String PASSWORD;
 
     private static DataSource mDatasour;
 
@@ -32,6 +32,8 @@ public class SqlFile2DB {
             props.load(in);
             DB_URL = props.getProperty("jdbc.url");
             DRIVER_NAME = props.getProperty("jdbc.driverClassName");
+            USERNAME = props.getProperty("jdbc.username");
+            PASSWORD = props.getProperty("jdbc.password");
         } catch (IOException e) {
             log.error(e.toString());
         }
@@ -44,9 +46,9 @@ public class SqlFile2DB {
         int count = 0;
         int nullCount = 0;
         try {
-            it = getLineIterator(path);
+            it = ApacheLineIterator.getLineIterator(path);
             Class.forName(DRIVER_NAME);
-            mDatasour = new DriverManagerDataSource(DB_URL, "root", "qq123456");
+            mDatasour = new DriverManagerDataSource(DB_URL, USERNAME, PASSWORD);
             JdbcTemplate jdbcTemplate = new JdbcTemplate(mDatasour);
 
             while (it.hasNext()) {
@@ -79,13 +81,4 @@ public class SqlFile2DB {
         }
     }
 
-    private static LineIterator getLineIterator(String path) throws IOException {
-        File source = new File(path);
-        return FileUtils.lineIterator(source, DEFAULT_CHARSET);
-    }
-
-    private static LineIterator getLineIterator(String path, String charset) throws IOException {
-        File source = new File(path);
-        return FileUtils.lineIterator(source, charset);
-    }
 }

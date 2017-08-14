@@ -1,4 +1,4 @@
-package xyz.ivyxjc;
+package xyz.ivyxjc.xml2Json;
 
 public class XmlToJson {
 
