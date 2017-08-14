@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <!--<Console name="ConsoleAppender" target="SYSTEM_OUT">-->
+    <!--<PatternLayout-->
+    <!--pattern="%d [%t] %-5level %logger{36} - %msg%n%throwable"/>-->
+    <!--</Console>-->
+    <!--<File name="JSONLogfileAppender" fileName="target/logfile.json">-->
+    <!--<JSONLayout compact="true" eventEol="true"/>-->
+    <!--<BurstFilter level="INFO" rate="2" maxBurst="10"/>-->
+    <!--<BurstFilter level="ERROR" rate="2" maxBurst="10"/>-->
+
+    <!--</File>-->
+
+    <File name="MyFile" fileName="logs/app.log">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+    </File>
+    <Async name="Async">
+      <AppenderRef ref="MyFile"/>
+    </Async>
+  </Appenders>
+  <Loggers>
+    <Root level="ERROR">
+      <AppenderRef ref="Async"/>
+    </Root>
+    <Root level="INFO">
+      <AppenderRef ref="Async"/>
+    </Root>
+  </Loggers>
+</Configuration>
