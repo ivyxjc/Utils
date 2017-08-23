@@ -1,16 +1,17 @@
 package xyz.ivyxjc.aboutDB;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.Properties;
-import javax.sql.DataSource;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import xyz.ivyxjc.utils.ApacheLineIterator;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class SqlFile2DB {
     private static Logger log = LogManager.getLogger(SqlFile2DB.class);
@@ -19,8 +20,7 @@ public class SqlFile2DB {
     private static String DB_URL;
     private static String USERNAME;
     private static String PASSWORD;
-
-    private static DataSource mDatasour;
+    private static DataSource sDatasour;
 
     private SqlFile2DB() {
     }
@@ -48,8 +48,8 @@ public class SqlFile2DB {
         try {
             it = ApacheLineIterator.getLineIterator(path);
             Class.forName(DRIVER_NAME);
-            mDatasour = new DriverManagerDataSource(DB_URL, USERNAME, PASSWORD);
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(mDatasour);
+            sDatasour = new DriverManagerDataSource(DB_URL, USERNAME, PASSWORD);
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(sDatasour);
 
             while (it.hasNext()) {
                 jdbcTemplate.getDataSource().getConnection().setAutoCommit(false);
